@@ -24,6 +24,10 @@ export default {
     pagenum: {
       type: Number,
       default: 1
+    },
+    pageSizeSearch: {
+      type: Number,
+      default: 10
     }
   },
   created () {
@@ -39,16 +43,23 @@ export default {
   },
   methods: {
     handleClick: function () {
+      var reg = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/
+      if (this.IPaddress !== '') {
+        if (!reg.test(this.IPaddress)) {
+          this.$Message.error('ip格式错误')
+        }
+      }
       this.$emit('paginNumber', this.num)
       this.listData(this.num)
     },
-    listData (no) {
+    listData () {
       this.$axios.post('/monitor/exception/listexceptionpage',
         {
           project_name: this.projectName,
           server_ip: this.IPaddress,
           exception_time: this.valueData,
-          page_no: no
+          page_no: this.pagenum,
+          page_size: this.pageSizeSearch
         }
       ).then(res => {
         this.$emit('dateList', res.data)
@@ -57,7 +68,10 @@ export default {
   },
   watch: {
     pagenum: function (val, oldVal) {
-      this.listData(val)
+      this.listData()
+    },
+    pageSizeSearch: function (valSize, oldvalSize) {
+      this.listData()
     }
   }
 }

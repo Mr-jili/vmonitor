@@ -19,7 +19,7 @@ module.exports = {
         }
       },
       '/api': {
-        target: 'http://172.22.1.15:8005',
+        target: 'http://172.22.1.22:9006',
         // changeOrigin: true,
         pathRewrite: {
           '^/api': ''

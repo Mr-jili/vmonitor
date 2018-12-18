@@ -7,7 +7,6 @@ import iView from 'iview'
 import 'iview/dist/styles/iview.css'
 import '@/permission.js' // permission control
 import axios from './api'
-
 Vue.use(iView)
 Vue.prototype.$axios = axios
 Vue.config.productionTip = false

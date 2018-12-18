@@ -1,6 +1,6 @@
 <template>
 <div>
-  <Table border :columns="columns7" :data="data6"></Table>
+  <Table class="table" border :columns="columns7" :data="data6"></Table>
 </div>
 </template>
 <script>

@@ -1,8 +1,8 @@
 <template>
   <div class="mr-car">
-    <searchBar @dateList='handleDataList' @changePageNum="changeNumPage" :pagenum="count"  @paginNumber ="paginNo1"/>
+    <searchBar @dateList='handleDataList' @changePageNum="changeNumPage" :pagenum="count"  @paginNumber ="paginNo1" :pageSizeSearch="pageSize"/>
     <Table @showDrawer="ishowDrawer" :data6="resultDate"/>
-    <page class="page" @totalChange="handelChangeTotal" :total-count="totalNum" @searchChange="searchchange" :pageValue="num"/>
+    <Page class="page" v-show="totalNum > 10?true:false" :total="totalNum" :page-size="pageSize" :current.sync="num" :show-sizer="true" :show-elevat="true" show-elevator @on-change="handleTotalChange" @on-page-size-change="pageSizeChange"/>
     <errModal ref="isShow"/>
   </div>
 </template>
@@ -10,23 +10,22 @@
 <script>
 import searchBar from '@/components/searchBar/index'
 import Table from '@/components/table/table'
-import page from '@/components/page/pagination'
 import errModal from '@/components/modal/err-modal'
 export default {
   name: 'marCar',
   data () {
     return {
       resultDate: [],
-      totalNum: 1,
+      totalNum: 0,
       count: 1,
       searchchange: 1,
-      num: 1
+      num: 1,
+      pageSize: 10
     }
   },
   components: {
     searchBar,
     Table,
-    page,
     errModal
   },
   methods: {
@@ -45,11 +44,18 @@ export default {
       console.log(data)
       this.count = data
     },
+    pageSizeChange (val) {
+      this.pageSize = val
+    },
     changeNumPage () {
       this.searchchange = 1
     },
     paginNo1: function (val) {
       this.num = val
+    },
+    handleTotalChange (value) {
+      console.log(value)
+      this.count = value
     }
   }
 }
@@ -57,15 +63,16 @@ export default {
 
 <style lang="less" scoped>
 .mr-car {
+  height: 100%;
   h1 {
     height: 60px;
     display: flex;
     align-items: center;
   }
   .page {
-    position: fixed;
-    bottom: 80px;
-    right: 80px;
+    height: 150px;
+    padding: 30px 20px 18px 0px;
+    text-align: right;
   }
 }
 </style>
